@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootballLeauge | Sporun Merkezi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- DEĞİŞKENLER VE TEMA --- */
+        :root {
+            --ana-renk: #2ecc71;
+            --arka-plan: #0f172a;
+            --kart-bg: rgba(255, 255, 255, 0.05);
+            --yazi: #f8fafc;
+            --vurgu: #e74c3c;
+            --nav-bg: #000000;
+        }
+
+        .light-mode {
+            --arka-plan: #f1f5f9;
+            --kart-bg: #ffffff;
+            --yazi: #1e293b;
+            --nav-bg: #1e293b;
+        }
+
+        /* --- GENEL AYARLAR --- */
+        * { box-sizing: border-box; transition: all 0.3s ease; margin: 0; padding: 0; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--arka-plan);
+            color: var(--yazi);
+            line-height: 1.6;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: var(--nav-bg);
+            border-bottom: 3px solid var(--ana-renk);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo { font-family: 'Oswald'; font-size: 1.8rem; color: var(--ana-renk); font-weight: bold; }
+        .nav-links a { color: #fff; text-decoration: none; margin-left: 20px; font-weight: 600; }
+        .btn-tema { background: var(--ana-renk); border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; margin-left: 15px; }
+
+        /* --- SON DAKİKA BANDI --- */
+        .sd-bandi {
+            background: #000;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 10px 5%;
+            border-bottom: 1px solid var(--ana-renk);
+        }
+        .sd-etiket { background: var(--vurgu); padding: 5px 15px; font-weight: bold; font-family: 'Oswald'; margin-right: 15px; white-space: nowrap; }
+
+        /* --- ANA KONTEYNER (GRID) --- */
+        .main-container {
+            max-width: 1300px;
+            margin: 20px auto;
+            display: grid;
+            grid-template-columns: 280px 1fr 320px; /* Sol - Orta - Sağ */
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        /* --- KART TASARIMI --- */
+        .kart {
+            background: var(--kart-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        h3 { font-family: 'Oswald'; color: var(--ana-renk); margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+
+        /* --- İÇERİK ÖZEL --- */
+        .haber-img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
+        .stat-bar { background: #334155; height: 8px; border-radius: 4px; margin: 10px 0; overflow: hidden; }
+        .stat-fill { background: var(--ana-renk); height: 100%; }
+
+        .live-score-box { text-align: center; font-size: 1.2rem; font-weight: bold; background: #000; padding: 15px; border-radius: 10px; margin: 10px 0; }
+        .goal-alert { color: var(--vurgu); font-size: 0.9rem; display: none; }
+
+        /* --- MOBİL UYUMLULUK --- */
+        @media (max-width: 1050px) {
+            .main-container { grid-template-columns: 1fr; }
+            .navbar { padding: 15px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">FootballLeague</div>
+        <div class="nav-links">
+            <a href="#">Haberler</a>
+            <a href="#">Puan Durumu</a>
+            <button class="btn-tema" onclick="toggleTheme()">🌓 MOD</button>
+        </div>
+    </nav>
+
+    <div class="sd-bandi">
+        <div class="sd-etiket">SON DAKİKA</div>
+        <marquee>⚡ Osimhen Transferi Tamamlandı! | 🏆 Şampiyonluk Yarışı Kızışıyor | 🚑 Yıldız Oyuncudan Kötü Haber...</marquee>
+    </div>
+
+    <div class="main-container">
+        <aside>
+            <div class="kart">
+                <h3>ŞAMPİYONLAR LİGİ PUAN DURUMU</h3>
+                <div style="font-size: 0.9rem;">
+                    <p>1. Arsenal <span style="float:right">18 P</span></p>
+                    <p>2. Bayern München <span style="float:right">15 P</span></p>
+                    <p>3. PSG <span style="float:right">13 P</span></p>
+                    <p>4. Manchester City <span style="float:right">13 P</span></p>
+                    <p>5. Atalanta <span style="float:right">13 P</span></p>
+                    <p>6. Inter <span style="float:right">12 P</span></p>
+                     <p>7. Real Madrid <span style="float:right">12 P</span></p>
+                      <p>8. Atletico Madrid <span style="float:right">12 P</span></p>
+                    <hr style="opacity: 0.1; margin: 10px 0;">
+                     <p>9. Liverpool <span style="float:right">12 P</span></p>
+                      <p>10. Borussia Dortmund <span style="float:right">11 P</span></p>
+                       <p>11. Tottenham <span style="float:right">11 P</span></p>
+                        <p>12. Newcastle <span style="float:right">10 P</span></p>
+                         <p>13. Chelsea<span style="float:right">10 P</span></p>
+                          <p>14. Sporting <span style="float:right">10 P</span></p>
+                           <p>15. Barcelona <span style="float:right">10 P</span></p>
+                            <p>16. Marsilya <span style="float:right">9 P</span></p>
+                             <p>17. Juventus <span style="float:right">9 P</span></p>
+                              <p>18. Galatsaray <span style="float:right">9 P</span></p>
+                               <p>19. Monaco <span style="float:right">9 P</span></p>
+                                <p>20. Leverkusen <span style="float:right">9 P</span></p>
+                                 <p>21. PSV <span style="float:right">8 P</span></p>
+                                  <p>22. Qarabağ <span style="float:right">7 P</span></p>
+                                   <p>23. Napoli <span style="float:right">7 P</span></p>
+                                    <p>24. Copenhag <span style="float:right">7 P</span></p>
+                                                 <hr style="opacity: 0.1; margin: 10px 0;">
+                </div> 
+            </div>
+            <div class="kart">
+                <h3>HAFTANIN YILDIZI</h3>
+                <strong>Florian Wirtz</strong>
+                <small>Hız</small>
+                <div class="stat-bar"><div class="stat-fill" style="width: 92%;"></div></div>
+                <small>Pas</small>
+                <div class="stat-bar"><div class="stat-fill" style="width: 88%;"></div></div>
+            </div>
+        </aside>
+
+        <main>
+            <div class="kart">
+                <img src="https://e0.365dm.com/25/06/1600x900/skysports-graphic-badge-premier-league_6939799.jpg?20250612080512" class="haber-img" alt="Haber">
+                <h2>Premier Lig'de Heyecan Hız Kesmeden Devam Ediyor</h2>
+                <p>Dünyanın en prestij ligi Premier League'de her sezon olduğu gibi bu sezonda futbolseverlerin takibinde. Son 3 sezondur üst üste 2.olan Arsenal, yaptığı nokta atışı transferleriyle 22 yıllık şampiyonluk hasretine son verecek mi yoksa Manchester City, dominasyon oyununuyla birlikte yine İngiltere'nin en büyüğü mü olacak. Aston Villa ise 10 yıl önce Leicester City'in yaptığı peri masalını yaparak tarihindeki ilk lig şampiyonluğuna ulaşmak isityor. Sezon ortasında krizlerle boğuşan son şampiyon Liverpool , biraz toparlanmış gibi duruyor. Aynı istikrarı devam ederse şampiyonluğa yeniden ortak olabilir. Chelsea, Manchester United, Tottentham ve Newcastle gibi takımlarsa Avrupa kupalarına gitmek için kıyasıya mücadele veriyor. Ligden düşmeme mücadelesinde ise West Ham, Burnley ve Wolves küme hattında yer alıyor.</p>
+                <button class="btn-tema" style="margin-top: 15px;">Devamını Oku</button>
+            </div>
+
+            <div class="kart">
+                <h3>CANLI MAÇ MERKEZİ</h3>
+                <div class="live-score-box">
+                    <span>ARSENAL</span> 
+                    <span id="score">4 - 1</span> 
+                    <span>ASTON VILLA</span>
+                </div>
+                <div style="text-align: center;">Dakika: <span id="minute">90+5</span>'</div>
+                <div id="goal-note" class="goal-alert" style="text-align: center;">⚽ GOL OLDU!</div>
+            </div>
+        </main>
+
+        <aside>
+            <div class="kart">
+                <h3 style="color:var(--vurgu)">TRANSFER RADARI</h3>
+                <div style="font-size: 0.85rem; border-left: 3px solid var(--vurgu); padding-left: 10px; margin-bottom: 10px;">
+                    <strong>Anthony Semenyo:</strong> Premier League'den birçok takım onu istiyor. Ancak Semenyo, tercihini Manchester City'den yana kullanacak gibi.
+                </div>
+                <div style="font-size: 0.85rem; border-left: 3px solid orange; padding-left: 10px;">
+                    <strong>Salih Özcan:</strong> Dortmund'da forma giyen milli futbolcu, Beşiktaş'a gelmeye sıcak bakıyor.
+                </div>
+            </div>
+
+            <div class="kart">
+                <h3>YAZARLAR</h3>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <div style="width: 40px; height: 40px; background: #2ecc71; border-radius: 50%;"></div>
+                    <div><strong>Ertem Şener</strong><br><small>Türk Futbolu Nereye Gidiyor</small></div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // Tema Değiştirme
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+        }
+
+        // Canlı Skor Simülasyonu
+        let min = 0;
+        let home = 0;
+        let away = 0;
+        
+        setInterval(() => {
+            if(min < 90) {
+                min++;
+                document.getElementById('minute').innerText = min;
+                
+                // Rastgele gol ihtimali
+                if(Math.random() < 0.05) {
+                    if(Math.random() > 0.5) home++; else away++;
+                    document.getElementById('score').innerText = home + " - " + away;
+                    const note = document.getElementById('goal-note');
+                    note.style.display = 'block';
+                    setTimeout(() => note.style.display = 'none', 3000);
+                }
+            }
+        }, 2000); // Test için hızlı akıyor
+    </script>
+</body>
+</html>
+<div class="nav-links">
+    <a href="index.html">Ana Sayfa</a>
+    <a href="haberler.html">Haberler</a>
+    <a href="puan-durumu.html">Puan Durumu</a>
+    <button class="btn-tema" onclick="toggleTheme()">🌓 MOD</button>
+</div>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puan Durumu | Football Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ana-renk: #2ecc71;
+            --arka-plan: #0f172a;
+            --kart-bg: rgba(255, 255, 255, 0.05);
+            --yazi: #f8fafc;
+            --nav-bg: #000000;
+        }
+
+        body { font-family: 'Poppins', sans-serif; background: var(--arka-plan); color: var(--yazi); margin: 0; }
+
+        /* NAVBAR (Ana sayfa ile aynı) */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 8%; background: var(--nav-bg); border-bottom: 3px solid var(--ana-renk); }
+        .logo { font-family: 'Oswald'; font-size: 1.8rem; color: var(--ana-renk); font-weight: bold; }
+        .nav-links a { color: #fff; text-decoration: none; margin-left: 20px; font-weight: 600; }
+
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+
+        /* TABLO TASARIMI */
+        .puan-tablosu {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--kart-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .puan-tablosu th {
+            background: var(--ana-renk);
+            color: #000;
+            padding: 15px;
+            text-align: left;
+            font-family: 'Oswald';
+        }
+
+        .puan-tablosu td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .puan-tablosu tr:hover { background: rgba(255,255,255,0.1); }
+
+        /* Şampiyonlar Ligi, Küme Düşme Renkleri */
+        .cl { border-left: 5px solid #1133df; } /* Şampiyonlar Ligi Mavisi */
+        .rel { border-left: 5px solid #000000; } /* Küme Düşme Kırmızısı */
+
+        .puan-vurgu { font-weight: bold; color: var(--ana-renk); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">FootballLeague</div>
+        <div class="nav-links">
+            <a href="index.html">Ana Sayfa</a>
+            <a href="#">Haberler</a>
+            <a href="puan-durumu.html">Puan Durumu</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 style="font-family: 'Oswald'; border-bottom: 2px solid var(--ana-renk); display: inline-block;">TRENDYOL SÜPER LİG PUAN DURUMU</h2>
+        
+        <table class="puan-tablosu">
+            <thead>
+                <tr>
+                    <th>Sıra</th>
+                    <th>Takım</th>
+                    <th>O</th>
+                    <th>G</th>
+                    <th>B</th>
+                    <th>M</th>
+                    <th>AV</th>
+                    <th>Puan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="cl">
+                    <td>1</td>
+                    <td><b>Galatasaray</b></td>
+                    <td>17</td>
+                    <td>13</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>27</td>
+                    <td class="puan-vurgu">42</td>
+                </tr>
+                <tr class="cl">
+                    <td>2</td>
+                    <td><b>Fenerbahçe</b></td>
+                    <td>17</td>
+                    <td>11</td>
+                    <td>6</td>
+                    <td>0</td>
+                    <td>25</td>
+                    <td class="puan-vurgu">39</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Trabzonspor</td>
+                    <td>17</td>
+                    <td>10</td>
+                    <td>5</td>
+                    <td>2</td>
+                    <td>12</td>
+                    <td class="puan-vurgu">35</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Göztepe</td>
+                    <td>17</td>
+                    <td>9</td>
+                    <td>5</td>
+                    <td>3</td>
+                    <td>12</td>
+                    <td class="puan-vurgu">32</td>
+                </tr>
+                <tr class="rel">
+                    <td>5</td>
+                    <td>Beşiktaş</td>
+                    <td>17</td>
+                    <td>8</td>
+                    <td>5</td>
+                    <td>4</td>
+                    <td>8</td>
+                    <td class="puan-vurgu">29</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Pro | Ana Sayfa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --ana-renk: #2ecc71; --arka-plan: #0f172a; --kart-bg: rgba(255, 255, 255, 0.05); --yazi: #f8fafc; --vurgu: #e74c3c; }
+        .light-mode { --arka-plan: #f1f5f9; --kart-bg: #ffffff; --yazi: #1e293b; }
+        * { box-sizing: border-box; transition: 0.3s; margin: 0; padding: 0; }
+        body { font-family: 'Poppins', sans-serif; background: var(--arka-plan); color: var(--yazi); }
+        
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 8%; background: #000; border-bottom: 3px solid var(--ana-renk); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-family: 'Oswald'; font-size: 1.8rem; color: var(--ana-renk); font-weight: bold; text-decoration: none; }
+        .nav-links a { color: #fff; text-decoration: none; margin-left: 20px; font-weight: 600; }
+        
+        .main-container { max-width: 1300px; margin: 20px auto; display: grid; grid-template-columns: 280px 1fr 320px; gap: 20px; padding: 0 20px; }
+        .kart { background: var(--kart-bg); border: 1px solid rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin-bottom: 20px; }
+        h3 { font-family: 'Oswald'; color: var(--ana-renk); margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+
+        /* FİKSTÜR ÖZEL */
+        .fikstur-row { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .fikstur-row:last-child { border: none; }
+        .vs-badge { background: var(--ana-renk); color: #000; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8rem; }
+
+        .haber-img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
+        .btn { background: var(--ana-renk); border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+
+        @media (max-width: 1050px) { .main-container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">FootballLeague</a>
+        <div class="nav-links">
+            <a href="index.html">Ana Sayfa</a>
+            <a href="haberler.html">Haberler</a>
+            <a href="puan-durumu.html">Puan Durumu</a>
+            <button class="btn" style="margin-left:15px;" onclick="document.body.classList.toggle('light-mode')">🌓</button>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <aside>
+            <div class="kart">
+                <h3>KISA PUAN DURUMU</h3>
+                <p>1. Galatasaray <span style="float:right">42 P</span></p>
+                <p>2. Fenerbahçe <span style="float:right">39 P</span></p>
+                <p>3. Trabzonspor <span style="float:right">35 P</span></p>
+                <a href="puan-durumu.html" style="color:var(--ana-renk); font-size:0.8rem; text-decoration:none;">Tümünü Gör →</a>
+            </div>
+        </aside>
+
+        <main>
+            <div class="kart">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPoC12kzqCyjpuvopOn4dHIH0ISIvXuIhVvg&s" class="haber-img">
+                <h2>Süper Kupa Heyecanı Giderek Artıyor</h2>
+                <p>5-6 Ocak'ta yarı final ve 10 Ocak'ta final müsabakaları taraftarları bi hayli heyecanlandırdı. Takımların maç öncesi ve detaylı analizler burada.</p>
+                <button class="btn" style="margin-top:10px;">Haberi Oku</button>
+            </div>
+
+            <div class="kart">
+                <h3>HAFTALIK FİKSTÜR</h3>
+                <div class="fikstur-row">
+                    <span>Galatsaray</span> <span class="vs-badge">VS</span> <span>Trabzonspor</span>
+                    <small>5 Ocak Pazartesi 20:30</small>
+                </div>
+                <div class="fikstur-row">
+                    <span>Fenerbahçe</span> <span class="vs-badge">VS</span> <span>Samsunspor</span>
+                    <small>6 Ocak Salı 20:30</small>
+                </div>
+                <div class="fikstur-row">
+                    <span>Galatasaray/Trabzonspor</span> <span class="vs-badge">VS</span> <span>Fenerbahçe/Samsunspor</span>
+                    <small>10 Ocak Cumartesi 20:30</small>
+                </div>
+            </div>
+        </main>
+
+        <aside>
+            <div class="kart">
+                <h3 style="color:var(--vurgu)">İSTATİSTİKLER</h3>
+                <p><strong>En Çok Gol Atan Takım:</strong> Galatasaray/Fenerbahçe - 39 Gol </p>
+                <p><strong>En Çok Gol Yiyen Takım:</strong> Kayserispor - 33 Gol</p>
+                <p><strong>Maç Başı Puan:</strong> Galatasaray - 2,5 Puan</p>
+                <p><strong>En Çok Sarı Kart Gören Takım:</strong> Gaziantep FK : 50 Sarı Kart</p>
+                <p><strong>En Çok Kırmızı Kart Gören Takım:</strong> Gençlerbirliği - 5 Kırmızı Kart</p>
+                <p><strong>Gol Krallığı:</strong> Eldar Şahmuradov - Başakşehir - 12 Gol</p>
+                <p><strong>Asist Krallığı:</strong> Barış Alper Yılmaz - Galatasaray - 7 Asist</p>
+                <p><strong>En Fazla Kurtarış Yapan Kaleci:</strong> Bilal Bayazıt - Kayserispor - 60 Kurtarış</p>
+            </div>
+        </aside>
+    </div>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haberler & Galeri | Football Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --ana-renk: #2ecc71; --arka-plan: #0f172a; --kart-bg: rgba(255, 255, 255, 0.05); --yazi: #f8fafc; }
+        body { font-family: 'Poppins', sans-serif; background: var(--arka-plan); color: var(--yazi); margin: 0; }
+        
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 8%; background: #000; border-bottom: 3px solid var(--ana-renk); }
+        .logo { font-family: 'Oswald'; font-size: 1.8rem; color: var(--ana-renk); font-weight: bold; text-decoration: none; }
+        .nav-links a { color: #fff; text-decoration: none; margin-left: 20px; font-weight: 600; }
+
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        h2 { font-family: 'Oswald'; border-bottom: 2px solid var(--ana-renk); display: inline-block; margin-bottom: 30px; }
+
+        /* HABER GRID */
+        .haber-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .haber-kart { background: var(--kart-bg); border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+        .haber-kart img { width: 100%; height: 200px; object-fit: cover; }
+        .haber-icerik { padding: 20px; }
+
+        /* GALERİ */
+        .galeri-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 50px; }
+        .galeri-grid img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .galeri-grid img:hover { transform: scale(1.05); }
+
+        /* MODAL (Büyüyen Resim) */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center; }
+        .modal-img { max-width: 80%; max-height: 80%; border-radius: 10px; }
+        .close { position: absolute; top: 20px; right: 40px; color: white; font-size: 40px; cursor: pointer; }
+
+        @media (max-width: 768px) { .galeri-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">FootballLeague</a>
+        <div class="nav-links">
+            <a href="index.html">Ana Sayfa</a>
+            <a href="haberler.html">Haberler</a>
+            <a href="puan-durumu.html">Puan Durumu</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>GÜNCEL HABERLER</h2>
+        <div class="haber-grid">
+            <div class="haber-kart">
+                <img src="https://imgrosetta.mynet.com.tr/file/22757953/22757953-860x480.jpg">
+                <div class="haber-icerik">
+                    <h3>Necip Uysal'dan emeklilik kararı</h3>
+                    <p>Yönetim tarafından kadro dışı kalan Necip Uysal, devre arasında herhangi bir takıma transfer olmayacağını, sezon sonunda ise futbolu bırakacağını açıkladı.</p>
+                </div>
+            </div>
+            <div class="haber-kart">
+                <img src="https://cms-images.acc.indazn.com/di/library/DAZN_News/4a/1d/serie-a-om-dazn_dm0f6994d6wq1m5dxtayqkxk0.jpg?t=-782219361&quality=80&w=750&h=422">
+                <div class="haber-icerik">
+                    <h3>İtalya Serie A'da şampiyonluk yarışı bambaşka bir boyuta ulaştı.</h3>
+                    <p>Inter , AC Milan, Napoli ve Juventus arasındaki şampiyonluk mücadelesi futbolseverler tarafından heyecanlı bir şekilde takip edeliyor.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 style="margin-top: 60px;">MAÇLARDAN KARELER</h2>
+        <div class="galeri-grid">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqCvXRVtOy5LX33O_VLvpqsxo72XwwIOK2SA&s" onclick="openModal(this)">
+            <img src="https://platform.barcablaugranes.com/wp-content/uploads/sites/21/2025/11/gettyimages-2248429593.jpg?quality=90&strip=all&crop=0.0073768073177902%2C0%2C99.985246385364%2C100&w=2400" onclick="openModal(this)">
+            <img src="https://media.fenerbahce.org/getmedia/45636ac9-519f-4be0-8a6e-e78feec13252/fbgsztkkpk.jpg?width=1200&height=675&ext=.jpg" onclick="openModal(this)">
+            <img src="https://www.aljazeera.com/wp-content/uploads/2025/11/reuters_690a6f98-1762291608.jpg?resize=770%2C513&quality=80" onclick="openModal(this)">
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content modal-img" id="img01">
+    </div>
+
+    <script>
+
+        
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haberler & Galeri | FootballLeague</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- TEMEL AYARLAR (Önceki ile aynı) --- */
+        :root { --ana-renk: #2ecc71; --arka-plan: #0f172a; --kart-bg: rgba(255, 255, 255, 0.05); --yazi: #f8fafc; }
+        body { font-family: 'Poppins', sans-serif; background: var(--arka-plan); color: var(--yazi); margin: 0; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 8%; background: #000; border-bottom: 3px solid var(--ana-renk); }
+        .logo { font-family: 'Oswald'; font-size: 1.8rem; color: var(--ana-renk); font-weight: bold; text-decoration: none; }
+        .nav-links a { color: #fff; text-decoration: none; margin-left: 20px; font-weight: 600; }
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        h2 { font-family: 'Oswald'; border-bottom: 2px solid var(--ana-renk); display: inline-block; margin-bottom: 30px; }
+
+        /* HABER GRID */
+        .haber-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .haber-kart { background: var(--kart-bg); border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+        .haber-kart img { width: 100%; height: 200px; object-fit: cover; }
+        .haber-icerik { padding: 20px; }
+
+        /* GALERİ IZGARASI */
+        .galeri-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 50px; }
+        /* Resimlere 'galeri-img' sınıfı ekledik */
+        .galeri-img { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; cursor: pointer; transition: 0.3s; border: 2px solid transparent; }
+        .galeri-img:hover { transform: scale(1.03); border-color: var(--ana-renk); }
+
+        /* --- GELİŞMİŞ MODAL (LIGHTBOX) SLIDER --- */
+        .modal { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.95); z-index: 2000; align-items: center; justify-content: center; 
+            flex-direction: column;
+        }
+        .modal-content-box { position: relative; max-width: 80%; max-height: 80%; }
+        .modal-img { width: 100%; height: auto; max-height: 70vh; object-fit: contain; border-radius: 10px; border: 2px solid var(--ana-renk); }
+        .close { position: absolute; top: 20px; right: 40px; color: white; font-size: 50px; cursor: pointer; z-index: 2001; }
+
+        /* Navigasyon Okları (Yeni Eklenen Kısım) */
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -50px;
+            color: var(--ana-renk);
+            font-weight: bold;
+            font-size: 40px;
+            transition: 0.3s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            background: rgba(0,0,0,0.5);
+        }
+        .next { right: -60px; border-radius: 3px 0 0 3px; }
+        .prev { left: -60px; border-radius: 3px 0 0 3px; }
+        .prev:hover, .next:hover { background-color: var(--ana-renk); color: #000; }
+
+        @media (max-width: 768px) { 
+            .galeri-grid { grid-template-columns: repeat(2, 1fr); } 
+            .prev { left: 0; } .next { right: 0; } /* Mobilde okları içeri al */
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">FootballLeague</a>
+        <div class="nav-links">
+            <a href="index.html">Ana Sayfa</a>
+            <a href="haberler.html">Haberler</a>
+            <a href="puan-durumu.html">Puan Durumu</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>MAÇLARDAN KARELER (GALERİ)</h2>
+        <p style="margin-bottom: 20px;">Futbolun her anını yakalayın.</p>
+
+        <div class="galeri-grid">
+            <img src="https://www.reuters.com/resizer/v2/MBAAYO5HS5L5JPI4BSPU3PTWPQ.jpg?auth=5853bf002a972658b332103ae0fc1ae198a8f79b4d57f9c0aacbb7e4ed637281&height=1005&width=1920&quality=80&smart=true" class="galeri-img" alt="Maç Anı 1">
+            <img src="https://cdnuploads.aa.com.tr/uploads/Contents/2024/10/20/thumbs_b_c_4bed940c67707e77d879e8bd0943f78a.jpg" class="galeri-img" alt="Stadyum">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ37nQlyfUUtutIq4PbOIjnz73vBR3aH_Pd5g&s" class="galeri-img" alt="Antrenman">
+            <img src="https://icdn.football-italia.net/wp-content/uploads/2023/12/Kenan-Yildiz-Juventus-Frosinone-celebrate.jpg" class="galeri-img" alt="Gol Sevinci">
+            <img src="https://assets.goal.com/images/v3/bltc69278cb51f1aef0/1076202.jpg?auto=webp&format=pjpg&width=3840&quality=60" class="galeri-img" alt="Taraftar">
+            <img src="https://i.ytimg.com/vi/aRHCkBdcGbs/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAJMdghOhr-9bUogHYQ1c42j7eyWg" class="galeri-img" alt="Maç Sonu">
+            <img src="https://i2-prod.mirror.co.uk/article36137737.ece/ALTERNATES/s1200f/0_Real-Madrid-v-FC-Barcelona-LaLiga-EA-Sports.jpg" class="galeri-img" alt="Futbol Topu">
+             <img src="https://resources.premierleague.pulselive.com/premierleague/photo/2025/05/25/28a1ad8f-c3e6-44b1-8b95-1bf8b87b0b95/Virgil-van-Dijk-lifts-Premier-League-Trophy.png" class="galeri-img" alt="Kupa">
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        
+        <div class="modal-content-box">
+            <a class="prev" onclick="changeImage(-1)">&#10094;</a>
+            <a class="next" onclick="changeImage(1)">&#10095;</a>
+            
+            <img class="modal-content modal-img" id="modal-image">
+            <div id="caption" style="text-align:center; margin-top:10px; font-weight:bold;"></div>
+        </div>
+    </div>
+
+    <script>
+        // --- GELİŞMİŞ GALERİ JAVASCRIPT ---
+        
+        let currentIndex = 0; // Şu anki resmin indeksi
+        const modal = document.getElementById("myModal");
+        const modalImg = document.getElementById("modal-image");
+        const captionText = document.getElementById("caption");
+        
+        // Sayfadaki tüm .galeri-img sınıfına sahip resimleri seç
+        const images = document.querySelectorAll('.galeri-img');
+        const imageUrls = []; // Resim kaynaklarını tutacak liste
+
+        // Her bir resmi döngüye al ve ayarla
+        images.forEach((img, index) => {
+            imageUrls.push({src: img.src, alt: img.alt}); // Kaynağı ve alt metni listeye ekle
+            
+            // Resme tıklandığında çalışacak fonksiyon
+            img.onclick = () => {
+                openModal(index);
+            };
+        });
+
+        // Modalı aç ve tıklanan resmi göster
+        function openModal(index) {
+            currentIndex = index;
+            modal.style.display = "flex";
+            updateModalImage();
+        }
+
+        // Modalı kapat
+        function closeModal() {
+            modal.style.display = "none";
+        }
+
+        // Resmi değiştir (direction: +1 ileri, -1 geri)
+        function changeImage(direction) {
+            currentIndex += direction;
+            
+            // Döngü mantığı: Sona geldiyse başa dön, başa geldiyse sona git
+            if (currentIndex >= imageUrls.length) currentIndex = 0;
+            if (currentIndex < 0) currentIndex = imageUrls.length - 1;
+            
+            updateModalImage();
+        }
+
+        // Modal içeriğini güncelle
+        function updateModalImage() {
+            modalImg.src = imageUrls[currentIndex].src;
+            captionText.innerText = imageUrls[currentIndex].alt; // Resmin alt metnini başlık yap
+        }
+
+        // Bonus: Klavye ok tuşları ile kontrol
+        document.addEventListener('keydown', function(e) {
+            if(modal.style.display === "flex") {
+                if(e.key === "ArrowLeft") changeImage(-1);
+                if(e.key === "ArrowRight") changeImage(1);
+                if(e.key === "Escape") closeModal();
+            }
+        });
+    </script>
+</body>
+</html><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="kart">
+    <h3>MAÇ ÖZETLERİ (VİDEO)</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div class="video-item">
+            <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
+                <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <p style="font-size: 0.8rem; margin-top: 5px;">Barcelona - Real Madrid (Özet)</p>
+        </div>
+        <div class="video-item">
+            <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
+                <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <p style="font-size: 0.8rem; margin-top: 5px;">Man City - Liverpool (Özet)</p>
+        </div>
+    </div>
+</div><div class="kart">
+    <h3>TAKIM FORM TRENDİ</h3>
+    <canvas id="formChart" height="250"></canvas>
+</div>
+<div class="kart" id="anket-kart">
+    <h3>HAFTANIN ANKETİ</h3>
+    <p>Sizce Süper Kupa'yı kim kazanır?</p>
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+        <button class="btn" onclick="oyVer('Galatasaray')">Galatasaray</button>
+        <button class="btn" onclick="oyVer('Fenerbahçe')" style="background: #badc40; color: rgb(1, 107, 245);">Fenerbahçe</button>
+        <button class="btn" onclick="oyVer('Beraberlik')" style="background: #334155; color: white;">Trabzonspor / Samsunspor</button>
+    </div>
+</div>
+<footer style="background: #000; color: #fff; padding: 50px 8% 20px; border-top: 3px solid var(--ana-renk); margin-top: 50px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px;">
+        <div>
+            <h3 style="color: var(--ana-renk); margin-bottom: 15px;">FOOTBALL PRO</h3>
+            <p style="font-size: 0.85rem; opacity: 0.7;">Sporun kalbinden en güncel haberler, analizler ve canlı skorlar. 2025 tüm hakları saklıdır.</p>
+        </div>
+        <div>
+            <h4 style="margin-bottom: 15px;">Hızlı Menü</h4>
+            <ul style="list-style: none; font-size: 0.85rem; line-height: 2;">
+                <li><a href="index.html" style="color:#fff; text-decoration:none;">Ana Sayfa</a></li>
+                <li><a href="haberler.html" style="color:#fff; text-decoration:none;">Haberler</a></li>
+                <li><a href="puan-durumu.html" style="color:#fff; text-decoration:none;">Puan Durumu</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 style="margin-bottom: 15px;">Bizi Takip Edin</h4>
+            <div style="display: flex; gap: 15px; font-size: 1.5rem;">
+                <a href="#" style="color: var(--ana-renk);">𝕏</a>
+                <a href="#" style="color: var(--ana-renk);">📸</a>
+                <a href="#" style="color: var(--ana-renk);">🎥</a>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; opacity: 0.5;">
+        © 2025 Football Pro Project | Design by Veri Bilimi Öğrencisi
+    </div>
+</footer>
+<tbody id="puan-tablosu-body">
+    </tbody><table class="puan-tablosu">
+    <thead>
+        <tr>
+            <th>Sıra</th>
+            <th>Takım</th>
+            <th>O</th>
+            <th>Puan</th>
+        </tr>
+    </thead>
+    <tbody id="puan-tablosu-body">
+        <tr><td colspan="4" style="text-align:center;">Veriler yükleniyor...</td></tr>
+    </tbody>
+</table>

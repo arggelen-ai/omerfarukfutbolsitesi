@@ -1,0 +1,300 @@
+.transfer-fisi {
+    background: rgba(235,235,215,0.03);
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+    border-left: 4px solid #d82d1a;
+}
+.durum-canli { color: #e74c3c; font-weight: bold; font-size: 0.8rem; margin-right: 10px; }
+.durum-beklemede { color: #f1c40f; font-weight: bold; font-size: 0.8rem; margin-right: 10px; }
+/* Ana konteyner genişliğini tam ekran yapıyoruz */
+/* Ana taşıyıcıyı ekranın %100'üne yayıyoruz */
+.main-container, .container {.ana-konteyner {
+    display: flex; /* İçerikleri yan yana dizmek için */
+    width: 95%; /* Ekranın %95'ini kaplasın */
+    max-width: 1600px; /* Çok devasa ekranlarda aşırı yayılmaması için üst sınır */
+    margin: 20px auto; /* Sayfayı ortala */
+    gap: 30px; /* Sol haber alanı ile sağ panel arasındaki boşluk */
+}/* Sol taraf (Haberler ve Büyük Resim) */
+.icerik-alani {.icerik-alani img {
+    width: 100%; /* Bulunduğu div'in genişliğini tam kaplar */
+    height: auto; /* Oranını bozmaz */
+    border-radius: 12px;
+    margin-top: 15px;
+}
+    flex: 3; /* Toplam alanın 4'te 3'ünü buraya veriyoruz */
+}
+
+/* Sağ taraf (Transfer Radarı ve Maç Özetleri) */
+.yan-panel {
+    flex: 1; /* Toplam alanın 4'te 1'ini buraya veriyoruz */
+    min-width: 300px; /* Çok daralmasını engelle */
+}
+    display: grid;
+    /* 1fr (esnek haber alanı) ve 350px (sabit sağ panel) */
+    grid-template-columns: 1fr 350px; 
+    gap: 30px;
+    padding: 0 5%; /* Kenarlardan sadece %5 pay bırak, kalan her yer dolsun */
+    max-width: 100vw; /* Ekran genişliğinin tamamını kullan (View Width) */
+    margin: 20px 0; /* Ortalamayı (auto) kaldırıp sıfıra çektik */
+    box-sizing: border-box;
+}
+
+/* Haber kartının içindeki resmin genişliğini zorla */
+.kart {
+    width: 100%; /* Kart sütunu tamamen kaplasın */
+    box-sizing: border-box;
+}
+
+.news-img, .haber-ana-img {
+    width: 100%; /* Resim kartın içinde hiç boşluk bırakmasın */
+    display: block;
+}
+
+/* Mobilde yine tek sütun yapıyoruz */
+@media (max-width: 1000px) {
+    .main-container, .container {
+        grid-template-columns: 1fr;
+        padding: 0 15px;
+    }
+}
+
+/* Haber görselinin bozulmaması için yükseklik ayarı */
+.haber-ana-img, .news-img {
+    width: 100%;
+    height: 500px; /* Geniş ekranlarda görselin çok küçük kalmaması için artırdık */
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+/* Mobil cihazlarda yine tek sütun kalması için */
+@media (max-width: 1000px) {
+    .container, .main-container {
+        grid-template-columns: 1fr;
+        padding: 0 15px;
+    }
+    .haber-ana-img, .news-img {
+        height: 300px;
+    }
+}
+.kart {
+    background: var(--kart-bg);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 25px;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    width: 100%; /* Kartın sütunu tam doldurmasını sağlar */
+    box-sizing: border-box; /* Padding değerlerinin genişliği etkilememesi için */
+}
+/* Ana taşıyıcıyı ekranın %100'üne yayıyoruz */
+.main-container, .container {
+    display: grid;
+    /* 1fr (esnek haber alanı) ve 350px (sabit sağ panel) */
+    grid-template-columns: 1fr 350px; 
+    gap: 30px;
+    padding: 0 5%; /* Kenarlardan sadece %5 pay bırak, kalan her yer dolsun */
+    max-width: 100vw; /* Ekran genişliğinin tamamını kullan (View Width) */
+    margin: 20px 100% /* Ortalamayı (auto) kaldırıp sıfıra çektik */
+    box-sizing border-box;
+}
+
+/* Haber kartının içindeki resmin genişliğini zorla */
+.kart {
+    width: 100%; /* Kart sütunu tamamen kaplasın */
+    box-sizing: border-box;
+}
+
+.news-img, .haber-ana-img {
+    width: 100%; /* Resim kartın içinde hiç boşluk bırakmasın */
+    display: block;
+}
+
+/* Mobilde yine tek sütun yapıyoruz */
+@media (max-width: 1000px) {
+    .main-container, .container {
+        grid-template-columns: 1fr;
+        padding: 0 15px;
+    }
+}
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* Yan kaydırma çubuğunu önler */
+}
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* Yan kaydırma çubuğunu önler */
+}
+/* 1. Body ve HTML'i sıfırlıyoruz */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden; /* Yan kaydırmayı engeller */
+}
+
+/* 2. Navbar'ı tam genişlik yapıyoruz */
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px; /* Kenarlardan çok az bir pay */
+    background: #000;
+    box-sizing: border-box; /* Padding'in genişliği bozmasını engeller */
+}
+
+/* 3. ANA KONTEYNER - Kritik Değişiklik Burası */
+.main-container, .container {
+    display: grid;
+    /* Haber alanı (1fr) tüm boşluğu alsın, Sağ panel 350px kalsın */
+    grid-template-columns: 1fr 350px; 
+    gap: 30px;
+    width: 100%; /* Sayfayı %100 doldur */
+    max-width: 100% !important; /* Herhangi bir kısıtlamayı zorla kırıyoruz */
+    padding: 20px 40px; /* Kenarlara yapışmasın ama dolgun dursun */
+    margin: 0; /* Ortalamayı (auto) iptal ettik, sola yasladık */
+    box-sizing: border-box;
+}
+
+/* 4. Haber Kartı ve Resim Ayarı */
+.kart {
+    width: 100%; /* Sütunu tamamen kapla */
+    background: var(--kart-bg);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 25px;
+    border-radius: 20px;
+    box-sizing: border-box;
+}
+
+.haber-ana-img, .news-img {
+    width: 100%;
+    height: 550px; /* Geniş ekranlarda daha heybetli dursun */
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+/* 5. MOBİL - Ekran küçülünce alt alta gelsin */
+@media (max-width: 1000px) {
+    .main-container, .container {
+        grid-template-columns: 1fr;
+        padding: 15px;
+    }
+    .navbar {
+        padding: 15px;
+    }
+}
+.son-dakika-konteynir {
+    display: flex;
+    align-items: center;
+    background: #000;
+    border: 1px solid var(--ana-renk);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    width: 100%; /* Sayfa genişliğine uyum sağlar */
+}
+
+.son-dakika-etiket {
+    background: var(--vurgu); /* Kırmızı renk (#e74c3c) */
+    color: white;
+    padding: 10px 20px;
+    font-family: 'Oswald';
+    font-weight: bold;
+    white-space: nowrap;
+    position: relative;
+}
+
+/* Ok işareti efekti */
+.son-dakika-etiket::after {
+    content: '';
+    position: absolute;
+    right: -10px;
+    top: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 10px solid var(--vurgu);
+    z-index: 1;
+}
+
+.son-dakika-metin {
+    padding: 10px;
+    color: var(--yazi);
+    font-size: 0.95rem;
+    width: 100%;
+}
+
+.son-dakika-metin marquee {
+    cursor: pointer;
+}
+/* Sayfa Sınırlarını Tamamen Kaldır */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* ANA TAŞIYICI - Sağa kaymayı önleyen ve tam yayan ayar */
+.main-container {
+    display: grid;
+    /* Sol taraf esnek (1fr), Sağ taraf sabit (350px) */
+    grid-template-columns: 1fr 350px; 
+    width: 100%;
+    max-width: 100vw; /* Ekranın tam genişliği */
+    margin: 0; /* Ortalamayı (auto) kesinlikle kaldırdık */
+    padding: 20px 30px; /* Kenarlara çok az bir boşluk veriyoruz */
+    gap: 30px;
+    box-sizing: border-box;
+}
+
+/* Son Dakika Bandı - Tüm genişliği kaplaması için */
+.son-dakika-konteynir {
+    grid-column: 1 / -1; /* Hem sol hem sağ sütunu kaplamasını sağlar */
+    display: flex;
+    background: #000;
+    border: 1px solid var(--ana-renk);
+    border-radius: 10px;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+/* Kartların genişliğini zorla */
+.kart {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.haber-ana-img {
+    width: 100%;
+    height: auto;
+    max-height: 600px;
+    object-fit: cover;
+}
+
+/* Mobil için düzelme */
+@media (max-width: 1000px) {
+    .main-container {
+        grid-template-columns: 1fr;
+        padding: 15px;
+    }
+}
+.bildirim {
+    position: fixed;
+    bottom: 20px;
+    right: -300px; /* Başlangıçta ekran dışında */
+    background: var(--ana-renk);
+    color: #000;
+    padding: 15px 25px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    font-weight: bold;
+    transition: 0.5s;
+    z-index: 9999;
+}
+.bildirim.aktif { right: 20px; }
+

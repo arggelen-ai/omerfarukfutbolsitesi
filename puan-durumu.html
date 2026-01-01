@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Puan Durumu |FootballLeague</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        /* index.html'deki CSS'in aynısını buraya da koyabiliriz veya ayrı bir style.css yapabiliriz */
+        body { background: #0f172a; color: white; font-family: 'Poppins'; margin: 0; }
+        .navbar { display: flex; justify-content: space-between; padding: 15px 8%; background: #000; border-bottom: 2px solid #e7500a; }
+        .navbar a { color: white; text-decoration: none; margin-left: 20px; font-weight: bold; }
+        
+        .container { max-width: 1000px; margin: 50px auto; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 15px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: #d72727; color: black; padding: 15px; text-align: left; }
+        td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        tr:hover { background: rgba(9, 56, 227, 0.1); }
+        .siralam-no { font-weight: bold; color: #1029e5; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div style="color:#cc332e; font-family:'Oswald'; font-size:1.8rem;">FootballLeague</div>
+        <div class="nav-links">
+            <a href="index.html">Ana Sayfa</a>
+            <a href="haberler.html">Haberler</a>
+            <a href="puan-durumu.html">Puan Durumu</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 style=">font-family:'Oswald'; color:#cc3b2e;"> TRENDYOL SÜPER LİG PUAN DURUMU</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sıra</th>
+                    <th>Takım</th>
+                    <th>O</th>
+                    <th>G</th>
+                    <th>B</th>
+                    <th>M</th>
+                    <th>AG</th>
+                    <th>YG</th>
+                    <th>Averaj</th>
+                    <th>Puan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><span class="siralam-no">1</span></td><td>Galatasaray</td><td>17</td><td>13</td><td>3</td><td>1</td><td>39</td><td>12</td><td>27</td><td>42</tr>
+                <tr><td><span class="siralam-no">2</span></td><td>Fenerbahçe</td><td>17</td><td>11</td><td>6</td><td>0</td><td>39</td><td>14</td><td>25</td><td>39</tr>
+                <tr><td><span class="siralam-no">3</span></td><td>Trabzonspor</td><td>17</td><td>10</td><td>5</td><td>2</td><td>33</td><td>20</td><td>12</td><td>35</tr>
+                  <tr><td><span class="siralam-no">4</span></td><td>Göztepe</td><td>17</td><td>9</td><td>5</td><td>3</td><td>21</td><td>9</td><td>12</td><td>32</tr> 
+                  <tr><td><span class="siralam-no">5</span></td><td>Beşiktaş</td><td>17</td><td>8</td><td>5</td><td>4</td><td>30</td><td>22</td><td>8</td><td>29</tr>  
+                    <tr><td><span class="siralam-no">6</span></td><td>Samsunspor</td><td>17</td><td>6</td><td>7</td><td>4</td><td>22</td><td>20</td><td>2</td><td>25</tr>
+                    <tr><td><span class="siralam-no">7</span></td><td>Başakşehir</td><td>17</td><td>6</td><td>5</td><td>6</td><td>27</td><td>18</td><td>9</td><td>23</tr>
+                     <tr><td><span class="siralam-no">8</span></td><td>Kocaelispor</td><td>17</td><td>6</td><td>5</td><td>6</td><td>15</td><td>17</td><td>-2</td><td>23</tr>
+                  <tr><td><span class="siralam-no">9</span></td><td>Gaziantep FK</td><td>17</td><td>6</td><td>5</td><td>6</td><td>24</td><td>30</td><td>-6</td><td>23</tr>
+                   <tr><td><span class="siralam-no">10</span></td><td>Alanyaspor</td><td>17</td><td>4</td><td>9</td><td>4</td><td>16</td><td>15</td><td>1</td><td>21</tr>
+                   <tr><td><span class="siralam-no">11</span></td><td>Gençlerbirliği</td><td>17</td><td>5</td><td>3</td><td>9</td><td>21</td><td>24</td><td>-2</td><td>18</tr>
+                     <tr><td><span class="siralam-no">12</span></td><td>Çaykur Rizespor</td><td>17</td><td>4</td><td>6</td><td>7</td><td>20</td><td>24</td><td>-4</td><td>18</tr>
+                        <tr><td><span class="siralam-no">13</span></td><td>Konyaspor</td><td>17</td><td>4</td><td>5</td><td>8</td><td>21</td><td>29</td><td>-8</td><td>17</tr>
+                            <tr><td><span class="siralam-no">14</span></td><td>Kasımpaşa</td><td>17</td><td>3</td><td>6</td><td>8</td><td>14</td><td>24</td><td>-10</td><td>15</tr>
+                                <tr><td><span class="siralam-no">15</span></td><td>Antalyaspor</td><td>17</td><td>4</td><td>3</td><td>10</td><td>16</td><td>31</td><td>-15</td><td>15</tr>
+                                    <tr><td><span class="siralam-no">16</span></td><td>Kayserispor</td><td>17</td><td>2</td><td>9</td><td>6</td><td>16</td><td>33</td><td>-17</td><td>15</tr>
+                                        <tr><td><span class="siralam-no">17</span></td><td>Eyüpspor</td><td>17</td><td>3</td><td>4</td><td>10</td><td>10</td><td>24</td><td>-14</td><td>13</tr>
+                                            <tr><td><span class="siralam-no">18</span></td><td>Fatih Karagümrük</td><td>17</td><td>2</td><td>3</td><td>12</td><td>14</td><td>32</td><td>-18</td><td>9</tr>
+                                                
+                                                                           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
