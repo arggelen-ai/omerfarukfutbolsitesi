@@ -22,3 +22,29 @@ jobs:
           git add veriler.json
           git commit -m "Otomatik veri guncelleme" || exit 0
           git push
+name: Veri Guncelleme
+on:
+  schedule:
+    - cron: '0 3 * * *' # Her gece 03:00
+  workflow_dispatch: # Manuel çalıştırma butonu
+
+jobs:
+  build:
+    runs-with: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Python Kur
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Gereksinimleri Yükle
+        run: pip install requests beautifulsoup4
+      - name: Veriyi Güncelle
+        run: python guncelle.py
+      - name: Değişiklikleri Kaydet
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "action@github.com"
+          git add veriler.json
+          git commit -m "Otomatik veri güncelleme"
+          git push
